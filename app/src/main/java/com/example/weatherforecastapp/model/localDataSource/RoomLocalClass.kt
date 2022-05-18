@@ -1,16 +1,16 @@
 package com.example.weatherapp.localDataSource
 
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.WeatherResponse
 import com.example.weatherapp.model.WeatherAlert
 import kotlinx.coroutines.flow.Flow
 
 class RoomLocalClass(private val weatherDao: WeatherDao) : LocalSource {
 
-    override fun getCurrentWeather(): OpenWeatherApi {
+    override fun getCurrentWeather(): WeatherResponse {
         return weatherDao.getCurrentWeather()
     }
 
-    override fun getFavoriteWeather(id: Int): OpenWeatherApi {
+    override fun getFavoriteWeather(id: Int): WeatherResponse {
         return weatherDao.getFavoriteWeather(id)
     }
 
@@ -26,11 +26,11 @@ class RoomLocalClass(private val weatherDao: WeatherDao) : LocalSource {
         weatherDao.deleteAlert(id)
     }
 
-    override suspend fun insertCurrentWeather(weather: OpenWeatherApi):Long {
+    override suspend fun insertCurrentWeather(weather: WeatherResponse):Long {
         return weatherDao.insertWeather(weather)
     }
 
-    override suspend fun updateWeather(weather: OpenWeatherApi) {
+    override suspend fun updateWeather(weather: WeatherResponse) {
         weatherDao.updateWeather(weather)
     }
 
@@ -38,7 +38,7 @@ class RoomLocalClass(private val weatherDao: WeatherDao) : LocalSource {
         weatherDao.deleteCurrentWeather()
     }
 
-    override fun getFavoritesWeather(): Flow<List<OpenWeatherApi>> {
+    override fun getFavoritesWeather(): Flow<List<WeatherResponse>> {
         return weatherDao.getFavoritesWeather()
     }
 

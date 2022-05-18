@@ -1,6 +1,6 @@
 package com.example.weatherapp.network
 
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.WeatherResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,7 +17,7 @@ object RetrofitHelper: RemoteSource {
     }
 
     override suspend fun getCurrentWeather(
-        lat: String,long: String,language: String,units: String): Response<OpenWeatherApi> =
+        lat: String,long: String,language: String,units: String): Response<WeatherResponse> =
         retrofitService.getCurrentWeather(lat, long, lang = language, units =units)
 
 }

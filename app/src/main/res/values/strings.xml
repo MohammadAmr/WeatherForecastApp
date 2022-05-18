@@ -15,4 +15,6 @@
     <string name="temp_state">Temp State</string>
     <string name="day_name">Day</string>
     <string name="temp_max_min">Max/Min</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

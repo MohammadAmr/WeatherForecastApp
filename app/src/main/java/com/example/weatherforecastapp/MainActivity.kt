@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        replaceFragment(HomeFragment(), "Home")
+        navView.setCheckedItem(R.id.nav_home)
     }
 
     private fun replaceFragment(fragment: Fragment, title: String){

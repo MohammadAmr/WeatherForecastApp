@@ -4,54 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.model.MyLocationProvider
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.*
 import com.example.weatherapp.model.RepositoryInterface
+import com.example.weatherforecastapp.utility.LocationLocator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel (private val repository: RepositoryInterface,
-    private val myLocationProvider: MyLocationProvider) : ViewModel() {
+    private val locationLocator: LocationLocator
+) : ViewModel() {
 
-    private val _openWeatherAPI = MutableLiveData<OpenWeatherApi>()
-    val openWeatherAPI: LiveData<OpenWeatherApi> = _openWeatherAPI
+    init{
+        getCurrentLocation()
+    }
 
-    fun getDataFromDatabase() {
+    private val _weatherResponse = MutableLiveData<WeatherResponse>()
+    val weatherResponse: LiveData<WeatherResponse> = _weatherResponse
+
+    fun fetchDataFromAPI(lat: String, long: String, language: String, units: String) {
+        var result: WeatherResponse? = null
         viewModelScope.launch(Dispatchers.IO) {
-            _openWeatherAPI.postValue(
-                repository.getCurrentWeatherFromLocalDataSource()
-            )
-        }
+                        result = repository.getWeather(lat, long, language, units)
+                        _weatherResponse.postValue(result!!)
+            }
     }
 
-    fun getDataFromRemoteToLocal(lat: String, long: String, language: String, units: String) {
-        var result: OpenWeatherApi? = null
-        viewModelScope.launch(Dispatchers.Main) {
-            val job = viewModelScope.launch(Dispatchers.IO) {
-                    try {
-                        result =
-                            repository.insertCurrentWeatherFromRemoteToLocal(
-                                lat, long, language, units)
-
-                    } catch (e: Exception) {
-                        result?.let { getDataFromDatabase() }
-                    }
-
-                }
-            job.join()
-            result?.let { getDataFromDatabase() }
-            this.cancel()
-        }
+    fun getLocation(): LiveData<Pair<Double, Double>> {
+        return locationLocator.locationList
     }
 
-    fun getFreshLocation() {
-        myLocationProvider.getFreshLocation()
+    fun getCurrentLocation() {
+        locationLocator.getCurrentLocation()
     }
-
-    fun observeLocation(): LiveData<ArrayList<Double>> {
-        return myLocationProvider.locationList
-    }
-
-
 }

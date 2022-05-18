@@ -1,24 +1,24 @@
 package com.example.weatherapp.localDataSource
 
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.WeatherResponse
 import com.example.weatherapp.model.WeatherAlert
 import kotlinx.coroutines.flow.Flow
 
 interface LocalSource {
 
-    fun getCurrentWeather(): OpenWeatherApi
+    fun getCurrentWeather(): WeatherResponse
 
-    suspend fun insertCurrentWeather(weather: OpenWeatherApi):Long
+    suspend fun insertCurrentWeather(weather: WeatherResponse):Long
 
-    suspend fun updateWeather(weather: OpenWeatherApi)
+    suspend fun updateWeather(weather: WeatherResponse)
 
     suspend fun deleteWeathers()
 
-    fun getFavoritesWeather(): Flow<List<OpenWeatherApi>>
+    fun getFavoritesWeather(): Flow<List<WeatherResponse>>
 
     suspend fun deleteFavoriteWeather(id:Int)
 
-    fun getFavoriteWeather(id:Int): OpenWeatherApi
+    fun getFavoriteWeather(id:Int): WeatherResponse
 
     suspend fun insertAlert(alert: WeatherAlert):Long
 

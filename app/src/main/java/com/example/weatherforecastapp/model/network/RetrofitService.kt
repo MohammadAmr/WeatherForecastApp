@@ -1,6 +1,6 @@
 package com.example.weatherapp.network
 
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.WeatherResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,5 +17,5 @@ interface RetrofitService {
         @Query("units") units: String,
         @Query("lang") lang: String,
         @Query("appid") app_id: String = appId
-    ): Response<OpenWeatherApi>
+    ): Response<WeatherResponse>
 }

@@ -1,29 +1,30 @@
 package com.example.weatherforecastapp.home.views
 
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.weatherapp.homeScreen.viewModel.HomeViewModel
 import com.example.weatherapp.homeScreen.viewModel.HomeViewModelFactory
-import com.example.weatherapp.model.MyLocationProvider
-import com.example.weatherapp.model.Repository
 import com.example.weatherapp.model.*
-import com.example.weatherapp.utility.ConnectivityChecker
 import com.example.weatherforecastapp.R
+import com.example.weatherforecastapp.utility.*
+import java.util.*
 
 class HomeFragment : Fragment() {
 
     //TextViews
     private lateinit var txtTemp : TextView
     private lateinit var txtTmpType : TextView
+    private lateinit var txtToday : TextView
     private lateinit var txtCity : TextView
     private lateinit var txtPressure : TextView
     private lateinit var txtHumidity : TextView
@@ -31,6 +32,9 @@ class HomeFragment : Fragment() {
     private lateinit var txtClouds : TextView
     private lateinit var txtUltraviolet : TextView
     private lateinit var txtVisibility : TextView
+
+    //Image Views
+    private lateinit var imgTmp : ImageView
 
     //Recycler Views
     private lateinit var dailyRV  : RecyclerView
@@ -74,14 +78,13 @@ class HomeFragment : Fragment() {
 
     }
 
-
     //Functions
-
     private fun initUI(view : View)
     {
         //TextViews
         txtTemp        = view.findViewById(R.id.txtTemp)
         txtTmpType     = view.findViewById(R.id.txtTmpType)
+        txtToday       = view.findViewById(R.id.txtToday)
         txtCity        = view.findViewById(R.id.txtCity)
         txtPressure    = view.findViewById(R.id.txtPressure)
         txtHumidity    = view.findViewById(R.id.txtHumidity)
@@ -90,34 +93,73 @@ class HomeFragment : Fragment() {
         txtUltraviolet = view.findViewById(R.id.txtUV)
         txtVisibility  = view.findViewById(R.id.txtVisibility)
 
+        //ImageViews
+        imgTmp         = view.findViewById(R.id.imgTmp)
+
         //Recylcer Views
         dailyRV        = view.findViewById(R.id.dailyRV)
-
         val linearLayoutManager = LinearLayoutManager(activity)
-        linearLayoutManager.orientation = RecyclerView.HORIZONTAL
-        dailyAdapter = DailyAdapter(activity)
+        linearLayoutManager.orientation = RecyclerView.VERTICAL
+        dailyAdapter = DailyAdapter(requireActivity())
         dailyRV.apply {
             layoutManager = linearLayoutManager
             adapter = dailyAdapter
         }
 
-        hourlyRV       = view.findViewById(R.id.hourlyRV)
+        hourlyRV = view.findViewById(R.id.hourlyRV)
         val linearLayoutManager2 = LinearLayoutManager(activity)
-        linearLayoutManager.orientation = RecyclerView.HORIZONTAL
-        hourlyAdapter = HourlyAdapter(activity)
+        linearLayoutManager2.orientation = RecyclerView.HORIZONTAL
+        hourlyAdapter = HourlyAdapter(requireActivity())
         hourlyRV.apply {
             layoutManager = linearLayoutManager2
             adapter = hourlyAdapter
         }
 
-
         //ViewModels
         homeFactory = HomeViewModelFactory(
-            Repository.getRepository(activity!!.applicationContext), MyLocationProvider(activity!!)
+            Repository.getRepository(requireActivity().applicationContext), LocationLocator(requireActivity())
         )
-        viewModel = ViewModelProvider(this,homeFactory)[HomeViewModel::class.java]
-        activity?.registerReceiver(ConnectivityChecker(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        viewModel = ViewModelProvider(this, homeFactory)[HomeViewModel::class.java]
+
+        viewModel.getLocation().observe(viewLifecycleOwner) {
+            if (it != Pair(0.0, 0.0)) {
+                lat  = it.first
+                long = it.second
+                viewModel.fetchDataFromAPI("$lat", "$long", lang, units)
+                Log.i("M3lsh", "initUI: observerLocation")
+            }
+        }
+
+        viewModel.weatherResponse.observe(viewLifecycleOwner) {
+            if (it != null) {
+                dailyAdapter.apply {
+                    this.daily = it.daily
+                    this.tempType = "° C"
+                    notifyDataSetChanged()
+                    Log.i("M3lsh", "initUI: weatherResponse")
+                }
+
+                hourlyAdapter.apply{
+                    this.hourly = it.hourly
+                    this.tempType = "° C"
+                    notifyDataSetChanged()
+                }
+                txtTemp.text        = it.current.temp.toInt().toString()
+                txtToday.text       = Helper.setTextToDayFromTimeStamp(it.current.dt, "EEE, dd MMM")
+                txtCity.text        = it.timezone
+                txtPressure.text    = it.current.pressure.toString()
+                txtHumidity.text    = it.current.humidity.toString()
+                txtWindSpeed.text   = it.current.windSpeed.toString()
+                txtClouds.text      = it.current.clouds.toString()
+                txtUltraviolet.text = it.current.uvi.toString()
+                txtVisibility.text  = it.current.visibility.toString()
+
+                Glide.with(this).load("https://openweathermap.org/img/wn/" + it.current.weather[0].icon + ".png").into(imgTmp);
+            }
+        }
+
+        viewModel.fetchDataFromAPI("$lat","$long",lang, units)
+
 
     }
-
 }

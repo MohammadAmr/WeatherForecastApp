@@ -5,33 +5,33 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.example.weatherapp.model.OpenWeatherApi
+import com.example.weatherapp.model.WeatherResponse
 import com.example.weatherapp.model.WeatherAlert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
     @Query("select * from weather where isFavorite = 0")
-    fun getCurrentWeather(): OpenWeatherApi
+    fun getCurrentWeather(): WeatherResponse
 
     //insert obj and return auto generated data base
     @Insert(onConflict = REPLACE)
-    suspend fun insertWeather(weather: OpenWeatherApi): Long
+    suspend fun insertWeather(weather: WeatherResponse): Long
 
     @Update
-    suspend fun updateWeather(weather: OpenWeatherApi)
+    suspend fun updateWeather(weather: WeatherResponse)
 
     @Query("DELETE FROM weather where isFavorite = 0")
     suspend fun deleteCurrentWeather()
 
     @Query("select * from weather where isFavorite = 1")
-    fun getFavoritesWeather(): Flow<List<OpenWeatherApi>>
+    fun getFavoritesWeather(): Flow<List<WeatherResponse>>
 
     @Query("DELETE FROM weather where id = :id")
     suspend fun deleteFavoriteWeather(id: Int)
 
     @Query("select * from weather where id = :id")
-    fun getFavoriteWeather(id: Int): OpenWeatherApi
+    fun getFavoriteWeather(id: Int): WeatherResponse
 
     @Insert(onConflict = REPLACE)
     suspend fun insertAlert(alert: WeatherAlert): Long

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "weather")
-data class OpenWeatherApi(
+data class WeatherResponse(
     @PrimaryKey(autoGenerate = true)
     @NonNull
     var id: Int,
@@ -86,7 +86,6 @@ data class FeelsLike(
 )
 
 data class Daily(
-
     @SerializedName("dt") var dt: Long,
     @SerializedName("sunrise") var sunrise: Int,
     @SerializedName("sunset") var sunset: Int,
@@ -105,7 +104,6 @@ data class Daily(
     @SerializedName("clouds") var clouds: Int,
     @SerializedName("pop") var pop: Double,
     @SerializedName("uvi") var uvi: Double
-
 )
 
 data class Alerts(

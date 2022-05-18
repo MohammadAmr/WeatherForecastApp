@@ -15,4 +15,6 @@
     <string name="temp_state">حالة الطقس</string>
     <string name="day_name">اليوم</string>
     <string name="temp_max_min">العظمى/الصغرة</string>
+    <string name="from">من</string>
+    <string name="to">الى</string>
 </resources>
