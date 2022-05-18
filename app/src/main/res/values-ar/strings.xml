@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="HelloWorld">أهلا بالعالم !!</string>
+    <string name="app_name">الطقس</string>
+    <string name="InitialSettings">الاعدادات الاولية</string>
+    <string name="Language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزية</string>
+    <string name="current_location">الموقع الحالى</string>
+    <string name="gps">تحديد الموقع</string>
+    <string name="using_maps">الخرائط</string>
+    <string name="done">تم</string>
+    <string name="open">فتح</string>
+    <string name="close">غلق</string>
+    <string name="temp_state">حالة الطقس</string>
+    <string name="day_name">اليوم</string>
+    <string name="temp_max_min">العظمى/الصغرة</string>
+</resources>

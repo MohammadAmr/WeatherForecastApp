@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/drawable/background.xml" value="0.20555555555555555" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/activity_main.xml" value="0.15" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/daily.xml" value="0.5" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/fragment_alerts.xml" value="0.11018237082066869" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/fragment_favorites.xml" value="0.11018237082066869" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/fragment_settings.xml" value="0.11018237082066869" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/hourly.xml" value="0.5" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/initial_settings_setup.xml" value="0.25" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/layout/week.xml" value="0.40208333333333335" />
+        <entry key="..\:/ITI/Fundamentals/Android/WeatherForecastApp/app/src/main/res/menu/nav_menu.xml" value="0.2078125" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

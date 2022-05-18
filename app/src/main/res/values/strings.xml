@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">WeatherForecastApp</string>
+    <string name="HelloWorld">Hello World!!</string>
+    <string name="InitialSettings">Initial Settings</string>
+    <string name="Language">Language</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="current_location">Current Location</string>
+    <string name="gps">GPS</string>
+    <string name="using_maps">Maps</string>
+    <string name="done">Done</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="temp_state">Temp State</string>
+    <string name="day_name">Day</string>
+    <string name="temp_max_min">Max/Min</string>
 </resources>
