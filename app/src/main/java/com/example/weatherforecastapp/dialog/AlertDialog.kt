@@ -50,9 +50,17 @@ class AlertDialog (private val context: Context, private val description: String
     }
 
     private fun close() {
-        (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(alertDialogView)
-        alertDialogView!!.invalidate()
-        (alertDialogView!!.parent as ViewGroup).removeAllViews()
+        try {
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(
+                alertDialogView
+            )
+            alertDialogView!!.invalidate()
+            (alertDialogView!!.parent as ViewGroup).removeAllViews()
+        } catch (e: Exception) {
+            Log.d("Error", e.toString())
+        }
+
+
     }
 
 

@@ -106,22 +106,4 @@ class myWorker (appContext: Context, workerParams: WorkerParameters):
         }
         Log.i("M3lsh", "displaying notification")
     }
-
-    private fun makeDialog(){
-        val dialog = Dialog(applicationContext)
-        dialog.apply {
-            setContentView(R.layout.initial_settings_setup)
-            getWindow()?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            setCancelable(false)
-
-            val btnDone: Button = findViewById(R.id.btnDone)
-            btnDone.setOnClickListener(View.OnClickListener {
-                dismiss();
-            })
-            show();
-        }
-    }
 }

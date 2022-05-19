@@ -1,18 +1,16 @@
-package com.example.weatherapp.homeScreen.viewModel
+package com.example.weatherforecastapp.homeScreen.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.model.*
-import com.example.weatherapp.model.RepositoryInterface
+import com.example.weatherforecastapp.model.RepositoryInterface
+import com.example.weatherforecastapp.model.*
 import com.example.weatherforecastapp.utility.LocationLocator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel (private val repository: RepositoryInterface,
-    private val locationLocator: LocationLocator
-) : ViewModel() {
+class HomeViewModel (private val repository: RepositoryInterface, private val locationLocator: LocationLocator) : ViewModel() {
 
     init{
         getCurrentLocation()

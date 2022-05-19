@@ -1,11 +1,12 @@
-package com.example.weatherapp.model
+package com.example.weatherforecastapp.model
 
 import android.content.Context
-import com.example.weatherapp.network.RemoteSource
-import com.example.weatherapp.network.RetrofitHelper
+import com.example.weatherforecastapp.model.network.RemoteSource
+import com.example.weatherforecastapp.model.network.RetrofitHelper
 
 class Repository(
-    private val remoteSource: RemoteSource) : RepositoryInterface {
+    private val remoteSource: RemoteSource
+) : RepositoryInterface {
 
     companion object {
         @Volatile

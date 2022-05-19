@@ -1,5 +1,6 @@
 package com.example.weatherforecastapp.home.views
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,12 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherapp.homeScreen.viewModel.HomeViewModel
-import com.example.weatherapp.homeScreen.viewModel.HomeViewModelFactory
-import com.example.weatherapp.model.*
+import com.example.weatherforecastapp.homeScreen.viewModel.HomeViewModel
+import com.example.weatherforecastapp.homeScreen.viewModel.HomeViewModelFactory
+import com.example.weatherforecastapp.model.*
 import com.example.weatherforecastapp.R
 import com.example.weatherforecastapp.utility.*
-import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -55,13 +55,10 @@ class HomeFragment : Fragment() {
     private var lang  : String = "en"
     private var units : String = "metric"
 
-
     //Life Cycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
     }
 
     override fun onCreateView(
@@ -73,14 +70,11 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
 
     //Functions
-    private fun initUI(view : View)
-    {
+    private fun initUI(view : View) {
+        var sharedPref = activity?.getSharedPreferences("shared", Context.MODE_PRIVATE)
+
         //TextViews
         txtTemp        = view.findViewById(R.id.txtTemp)
         txtTmpType     = view.findViewById(R.id.txtTmpType)
@@ -115,18 +109,24 @@ class HomeFragment : Fragment() {
             adapter = hourlyAdapter
         }
 
+
+        units = sharedPref?.getString("units", "metric") ?: "metric"
+        Log.i("M3lsh", "HomeScreen Units VAR: ${units} ")
         //ViewModels
         homeFactory = HomeViewModelFactory(
             Repository.getRepository(requireActivity().applicationContext), LocationLocator(requireActivity())
         )
         viewModel = ViewModelProvider(this, homeFactory)[HomeViewModel::class.java]
 
+
+        Log.i("M3lsh", "I am here")
+
+
         viewModel.getLocation().observe(viewLifecycleOwner) {
             if (it != Pair(0.0, 0.0)) {
                 lat  = it.first
                 long = it.second
                 viewModel.fetchDataFromAPI("$lat", "$long", lang, units)
-                Log.i("M3lsh", "initUI: observerLocation")
             }
         }
 
@@ -134,22 +134,22 @@ class HomeFragment : Fragment() {
             if (it != null) {
                 dailyAdapter.apply {
                     this.daily = it.daily
-                    this.tempType = "° C"
+                    this.tempType = Helper.getTempType(units)
                     notifyDataSetChanged()
-                    Log.i("M3lsh", "initUI: weatherResponse")
                 }
 
                 hourlyAdapter.apply{
                     this.hourly = it.hourly
-                    this.tempType = "° C"
+                    this.tempType = Helper.getTempType(units)
                     notifyDataSetChanged()
                 }
                 txtTemp.text        = it.current.temp.toInt().toString()
+                txtTmpType.text     = Helper.getTempType(units)
                 txtToday.text       = Helper.setTextToDayFromTimeStamp(it.current.dt, "EEE, dd MMM")
                 txtCity.text        = it.timezone
                 txtPressure.text    = it.current.pressure.toString()
                 txtHumidity.text    = it.current.humidity.toString()
-                txtWindSpeed.text   = it.current.windSpeed.toString()
+                txtWindSpeed.text   = it.current.windSpeed.toString() + " " + Helper.getWindSpeedType(units)
                 txtClouds.text      = it.current.clouds.toString()
                 txtUltraviolet.text = it.current.uvi.toString()
                 txtVisibility.text  = it.current.visibility.toString()
@@ -157,9 +157,11 @@ class HomeFragment : Fragment() {
                 Glide.with(this).load("https://openweathermap.org/img/wn/" + it.current.weather[0].icon + ".png").into(imgTmp);
             }
         }
-
+        units = sharedPref?.getString("units", "metric") ?: "metric"
+        Log.i("M3lsh", "initUI HomeFrag units = ${units}")
         viewModel.fetchDataFromAPI("$lat","$long",lang, units)
 
 
     }
+
 }

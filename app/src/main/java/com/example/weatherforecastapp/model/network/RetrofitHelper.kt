@@ -1,6 +1,5 @@
-package com.example.weatherapp.network
-
-import com.example.weatherapp.model.WeatherResponse
+package com.example.weatherforecastapp.model.network
+import com.example.weatherforecastapp.model.*
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

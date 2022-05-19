@@ -9,11 +9,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
+import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,11 +23,13 @@ import com.example.weatherforecastapp.alerts.views.AlertsFragment
 import com.example.weatherforecastapp.favorites.views.FavoritesFragment
 import com.example.weatherforecastapp.home.views.HomeFragment
 import com.example.weatherforecastapp.settings.views.SettingsFragment
+import com.example.weatherforecastapp.utility.LocationLocator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var navView : NavigationView
     private lateinit var dialog : Dialog
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawerLayout : DrawerLayout
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         initNavigationDrawer()
 
-        val sharedPref = getSharedPreferences("M3lsh", Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("shared", Context.MODE_PRIVATE)
         val isFirst : Boolean = sharedPref.getBoolean("isFirstTime", true)
 
         if (isFirst) {
@@ -51,20 +54,37 @@ class MainActivity : AppCompatActivity() {
                 )
                 setCancelable(false)
 
-                val btnDone: Button = findViewById(R.id.btnDone)
+                val btnDone: Button = findViewById(R.id.btnDonee)
+                val units : RadioGroup = findViewById(R.id.unitss)
+
+                var str = "metric"
+
+
+                Log.i("M3lsh", "units = ${str}")
                 btnDone.setOnClickListener(View.OnClickListener {
+
+                    when (units.checkedRadioButtonId) {
+                        R.id.radMetricc -> str = "metric"
+                        R.id.radImperiall -> str = "imperial"
+                        R.id.radDefaultt -> str = "default"
+                    }
+                    Log.i("M3lsh", "units = ${str}")
                     val editor = sharedPref.edit()
                     editor.apply{
                         putBoolean("isFirstTime", false)
+                        putString("units", str)
                         apply()
                     }
+                    val location = LocationLocator(this@MainActivity)
+                    location.requestPermission()
                     checkDrawOverlayPermission()
+                    replaceFragment(HomeFragment(), "Home")
+                    navView.setCheckedItem(R.id.nav_home)
                     dismiss();
                 })
                 show();
             }
         }
-
     }
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkDrawOverlayPermission() {
@@ -92,8 +112,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun initNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawerLayout)
-        val navView : NavigationView = findViewById(R.id.nav_view)
-
+        navView = findViewById(R.id.nav_view)
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()

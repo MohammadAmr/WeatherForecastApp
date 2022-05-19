@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.LocationCallback
@@ -19,6 +18,7 @@ import androidx.core.app.ActivityCompat
 
 
 class LocationLocator(private val activity: Activity) {
+
     private var myLocationList : Pair<Double, Double> = Pair(0.0, 0.0)
     private var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity.applicationContext)
 
@@ -64,7 +64,6 @@ class LocationLocator(private val activity: Activity) {
             super.onLocationResult(locationResult)
             val locationList = locationResult.locations
             if (locationList.isNotEmpty()) {
-                //The last location in the list is the newest
                 val location = locationList.last()
                 myLocationList = Pair(location.latitude, location.longitude)
                 _myLocation.postValue(myLocationList)
@@ -78,7 +77,7 @@ class LocationLocator(private val activity: Activity) {
                 && ContextCompat.checkSelfPermission(activity.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
     }
 
-    private fun requestPermission() {
+    fun requestPermission() {
         if (ContextCompat.checkSelfPermission(activity.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation()
         }

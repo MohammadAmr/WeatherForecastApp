@@ -1,9 +1,9 @@
 package com.example.weatherforecastapp.model
 
-import com.example.weatherapp.model.Alerts
-import com.example.weatherapp.model.Current
-import com.example.weatherapp.model.Daily
-import com.example.weatherapp.model.Hourly
+import com.example.weatherforecastapp.model.Alerts
+import com.example.weatherforecastapp.model.Current
+import com.example.weatherforecastapp.model.Daily
+import com.example.weatherforecastapp.model.Hourly
 import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(

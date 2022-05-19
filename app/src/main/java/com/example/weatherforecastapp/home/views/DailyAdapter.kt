@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherapp.model.Daily
+import com.example.weatherforecastapp.model.*
 import com.example.weatherforecastapp.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +37,6 @@ class DailyAdapter(private val context: Context) : RecyclerView.Adapter<DailyAda
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.i("M3lsh", "onBindViewHolder: ")
         val today = daily.get(position)
         holder.txtTempState.text = today.weather[0].description.capitalize()
         holder.txtDay.text = setTextToDayFromTimeStamp(today.dt)

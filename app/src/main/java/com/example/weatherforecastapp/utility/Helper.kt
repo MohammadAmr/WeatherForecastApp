@@ -60,6 +60,23 @@ class Helper {
             if (min.length  == 1) min  = "0"+min
             return hour+":"+min
         }
+        fun getTempType(unit: String): String {
+            var ret : String = "° C"
+            when(unit)
+            {
+                "imperial" -> ret = "° F"
+                "default"  -> ret = "° K"
+            }
+            return ret
+        }
+        fun getWindSpeedType(unit: String) : String {
+            var ret : String = " m/s"
+            if(unit == "imperial")
+            {
+                ret = " m/hr"
+            }
+            return ret
+        }
     }
 
 }

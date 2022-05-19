@@ -67,6 +67,9 @@ class AlertsFragment : Fragment() {
         radAlarm    = view.findViewById(R.id.radAlarm)
         radNotification = view.findViewById(R.id.radNotification)
 
+
+        notifyGroup.check(R.id.radAlarm)
+
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -102,6 +105,15 @@ class AlertsFragment : Fragment() {
 
 
         btnAdd.setOnClickListener(View.OnClickListener {
+
+            var notifyWithAlert = false
+
+            when(notifyGroup.checkedRadioButtonId){
+                R.id.radAlarm-> notifyWithAlert = true
+                R.id.radNotification -> notifyWithAlert = false
+            }
+
+
             val d1 : String = txtDateFrom.text.toString() + " " + txtTimee.text.toString() + ":00"
             val d2 : String = Helper.dateFormat.format(Calendar.getInstance().time)
             val time = Helper.findDifference(d1, d2)
@@ -113,6 +125,7 @@ class AlertsFragment : Fragment() {
                 .putString("endDate", txtDateTo.text.toString() + " " + txtTimee.text.toString() + ":00")
                 .putString("time", txtTimee.text.toString())
                 .putBoolean("isOk", false)
+                .putBoolean("alert", notifyWithAlert)
                 .build()
 
 

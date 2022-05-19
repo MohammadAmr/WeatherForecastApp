@@ -1,6 +1,5 @@
 package com.example.weatherforecastapp.home.views
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherapp.model.*
+import com.example.weatherforecastapp.model.*
 import com.example.weatherforecastapp.R
 import com.example.weatherforecastapp.utility.Helper
-import java.text.SimpleDateFormat
-import java.util.*
 
 class HourlyAdapter(private val context: Context) : RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
 
