@@ -1,8 +1,11 @@
 package com.example.weatherforecastapp
 
-import android.app.ActionBar
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -11,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -18,6 +22,7 @@ import com.example.weatherforecastapp.alerts.views.AlertsFragment
 import com.example.weatherforecastapp.favorites.views.FavoritesFragment
 import com.example.weatherforecastapp.home.views.HomeFragment
 import com.example.weatherforecastapp.settings.views.SettingsFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                         putBoolean("isFirstTime", false)
                         apply()
                     }
+                    checkDrawOverlayPermission()
                     dismiss();
                 })
                 show();
@@ -60,7 +66,30 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkDrawOverlayPermission() {
+        // Check if we already  have permission to draw over other apps
+        if (!Settings.canDrawOverlays(this)) {
+            // if not construct intent to request permission
+            val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+            alertDialogBuilder.setTitle("Permissions needed")
+                .setMessage("We need your permission to draw over apps")
+                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.packageName)
+                    )
+                    // request permission via start activity for result
+                    startActivityForResult(intent, 1)
+                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+                    dialog.dismiss()
 
+                }.setNegativeButton("Cancel"
+                ) { dialog: DialogInterface, _: Int ->
+                    dialog.dismiss()
+                }.show()
+        }
+    }
     private fun initNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)

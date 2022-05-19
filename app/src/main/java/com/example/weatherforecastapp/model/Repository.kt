@@ -1,16 +1,11 @@
 package com.example.weatherapp.model
 
 import android.content.Context
-import com.example.weatherapp.localDataSource.LocalSource
-import com.example.weatherapp.localDataSource.RoomLocalClass
-import com.example.weatherapp.localDataSource.WeatherDatabase
 import com.example.weatherapp.network.RemoteSource
 import com.example.weatherapp.network.RetrofitHelper
-import kotlinx.coroutines.flow.Flow
 
 class Repository(
-    private val remoteSource: RemoteSource, private val localSource: LocalSource,
-) : RepositoryInterface {
+    private val remoteSource: RemoteSource) : RepositoryInterface {
 
     companion object {
         @Volatile
@@ -19,8 +14,7 @@ class Repository(
         fun getRepository(context: Context): Repository {
             return INSTANCE ?: synchronized(this) {
                 Repository(
-                    RetrofitHelper,
-                    RoomLocalClass(WeatherDatabase.getDatabase(context).weatherDao())
+                    RetrofitHelper
                 ).also {
                     INSTANCE = it
                 }

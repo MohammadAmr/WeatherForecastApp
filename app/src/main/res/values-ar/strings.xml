@@ -17,4 +17,7 @@
     <string name="temp_max_min">العظمى/الصغرة</string>
     <string name="from">من</string>
     <string name="to">الى</string>
+    <string name="time">الوقت</string>
+    <string name="channel_name">channel-1</string>
+    <string name="channel_description">channel-description</string>
 </resources>
